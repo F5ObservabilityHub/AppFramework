@@ -13,7 +13,7 @@ a starting point, and projects which are developed against these are expected to
 and other customizations.
 
 
-<img src="./docs/assets/application-component-hierarchy.png" width="900px">
+<img src="./img/application-component-hierarchy.png" width="900px">
 
 ### Why Should You Use This?
 Building on top of this repository as the core allows you to focus on the higher-level aspects of your solution without getting bogged down 
@@ -31,7 +31,7 @@ observability data in Opentelemetry (or other) format. The stack contains everyt
 build visualizations around that data. In the future, additional capabilities for validating the emmited data and similar functionality
 may be added.
 
-<img src="./docs/assets/observability-development.png" width="900px">
+<img src="./img/observability-development.png" width="900px">
 
 An example use case for this stack might be a developer working to instrument an application with an OTEL SDK.
 They would run the solution stack on their laptop, and configure their develpment instance / SDK to forward OTEL metrics/logs/traces to
@@ -44,7 +44,7 @@ The second stack is geared toward those looking to build applications that consu
 for creating powerful prototype monitoring and analytics solutions. By utilizing Docker Compose's flexibility, the stack can be easily customized and extended
 to meet specific needs, making it simple to switch between different configurations or adapt the environment as requirements evolve.
 
-<img src="./docs/assets/observability-application.png" width="900px">
+<img src="./img/observability-application.png" width="900px">
 
 An example use case would be the Application Study Tool, a BigIP Telemetry visualization tool. It leverages the Observability Hub
 AppFramework components as the core of the tool, providing a mechanism for fetching, storing, and visualizing data. It cusomizes this
