@@ -1,0 +1,56 @@
+receivers:
+  syslog/container-logs:
+    udp:
+      listen_address: "${env:HOSTNAME}:5514"
+    protocol: rfc5424
+    location: UTC
+
+  syslog/tcp:
+    tcp:
+      listen_address: "${env:HOSTNAME}:54526"
+      tls:
+        ca_file: /etc/otel-collector-config/ssl/ca.pem
+        cert_file: /etc/otel-collector-config/ssl/cert.pem
+        key_file: /etc/otel-collector-config/ssl/key.pem
+    protocol: rfc5424
+    location: UTC
+
+processors:
+  batch/clickhouse:
+    timeout: 5s
+    send_batch_size: 5000
+
+exporters:
+  otlphttp/prometheus:
+    endpoint: http://prometheus:9090/api/v1/otlp
+
+  clickhouse:
+    endpoint: tcp://clickhouse:9000?dial_timeout=10s
+    database: otel
+    async_insert: true
+    ttl: 72h
+    compress: lz4
+    create_schema: true
+    timeout: 5s
+    retry_on_failure:
+      enabled: true
+      initial_interval: 5s
+      max_interval: 5s
+      max_elapsed_time: 30s
+    username: otel
+    password: ${env:OTEL_COLLECTOR_CLICKHOUSE_PASSWORD}
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlphttp/prometheus]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, clickhouse]
+    logs:
+      receivers: [otlp, syslog/container-logs]
+      processors: [batch]
+      exporters: [debug, clickhouse]

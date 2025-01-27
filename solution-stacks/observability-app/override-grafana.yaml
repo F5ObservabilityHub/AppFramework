@@ -1,0 +1,22 @@
+x-default-logging: &logging
+  driver: "syslog"
+  options:
+    syslog-address: "udp://host.docker.internal:5514"
+    syslog-format: rfc5424
+    tag: "{{.Name}}"
+
+services:
+  grafana:
+    logging: *logging
+    volumes:
+      # Add in the prometheus infrastructure dashboards
+      - ../../components/grafana/config/dashboards/prometheus/infrastructure:/etc/dashboards/infrastructure
+      - ../../components/grafana/config/provisioning/dashboards/dashboards-infrastructure.yaml:/etc/grafana/provisioning/dashboards/dashboards-infrastructure.yaml
+      # Add in the clickhouse datasource
+      - ../../components/grafana/config/provisioning/datasources/datasource-clickhouse.yaml:/etc/grafana/provisioning/datasources/datasource-clickhouse.yaml
+      # Add in the prometheus datasource
+      - ../../components/grafana/config/provisioning/datasources/datasource-prometheus.yaml:/etc/grafana/provisioning/datasources/datasource-prometheus.yaml
+    environment:
+      # Enable Clickhouse related Env Variables
+      - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+      - GRAFANA_CLICKHOUSE_PASSWORD=${GRAFANA_CLICKHOUSE_PASSWORD}

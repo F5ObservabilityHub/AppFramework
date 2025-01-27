@@ -1,0 +1,24 @@
+# This stanza is referenced below and sends container logs as udp syslog to the docker network interface
+# The Otel Collector syslog receiver is listening at this address:port to forward data to clickhouse.
+x-default-logging: &logging
+  driver: "syslog"
+  options:
+    syslog-address: "udp://host.docker.internal:5514"
+    syslog-format: rfc5424
+    tag: "{{.Name}}"
+
+services:
+  clickhouse:
+    # Add logging driver configs above to forward to Otel Collector -> Clickhouse
+    logging: *logging
+    volumes:
+      # Add Otel Collector User (creates otel metrics,logs,trace tables, writes data to them)
+      - ../../components/clickhouse/config/users.d/user-otel-collector.xml:/etc/clickhouse-server/users.d/user-otel-collector.xml
+      # Add Grafana User (reads from otel tables)
+      - ../../components/clickhouse/config/users.d/user-grafana.xml:/etc/clickhouse-server/users.d/user-grafana.xml
+    environment:
+      # Referenced in the Clickhouse user config (user-grafana.xml) to set the grafana password
+      GRAFANA_CLICKHOUSE_PASSWORD: ${GRAFANA_CLICKHOUSE_PASSWORD}
+      # Referenced in the Clickhouse user config (user-otel-collector.xml) to set the otel-collector password
+      OTEL_COLLECTOR_CLICKHOUSE_PASSWORD: ${OTEL_COLLECTOR_CLICKHOUSE_PASSWORD}
+
