@@ -3,7 +3,7 @@ version: "3.7"
 
 services:
   otel-collector:
-    image: ghcr.io/f5devcentral/application-study-tool/otel_custom_collector:v0.8.0
+    image: ghcr.io/f5devcentral/application-study-tool/otel_custom_collector:v0.8.1
     restart: unless-stopped
     command:
       - "--config=/etc/otel-collector.yaml"
@@ -14,4 +14,3 @@ services:
     ports:
       - "4317:4317"   # OTLP GRPC
       - "4318:4318"   # OTLP HTTP
-      - "5514:5514/udp" # Syslog UDP

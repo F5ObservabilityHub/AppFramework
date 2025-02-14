@@ -5,9 +5,13 @@ volumes:
 
 services:
   clickhouse:
-    image: clickhouse/clickhouse-server:24.8
+    image: clickhouse/clickhouse-server:25.1.4
     user: "101:101"
     hostname: clickhouse
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
     volumes:
       - ./config/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
       - ./config/users.d/user-default.xml:/etc/clickhouse-server/users.d/user-default.xml

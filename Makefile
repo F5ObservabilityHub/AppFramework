@@ -43,6 +43,9 @@ ifeq ($(DOCKER_COMPOSE_FILE),)
 $(warning No valid Docker Compose file found (docker-compose.yaml or compose.yaml), set with 'make DOCKER_COMPOSE_FILE=<path> ...' or move to the directory with the main Makefile)
 endif
 
+.PHONY: check-appframework
+check-appframework: # Ensure this submodule is initialized (hidden from help)
+
 .PHONY: up
 up: ## Docker compose up
 	@echo "🚀 Starting the Docker Compose environment..."
@@ -105,38 +108,38 @@ destroy: ## Docker compose down and remove volumes, destroying all data
 	$(CONTAINER_COMPOSETOOL) -f $(DOCKER_COMPOSE_FILE) down -v;
 
 .PHONY: observability-dev-up
-observability-dev-up: ## Docker compose up for observability development stack
+observability-dev-up: # Docker compose up for observability development stack
 	@echo "🚀 Starting the Local Dev Default Docker Compose environment..."
 	@echo "Starting in foreground mode..."
-	@trap 'exit 0' INT; $(CONTAINER_COMPOSETOOL) -f core-components-poc/solution-stacks/observability-development/compose.yaml up || true;
+	@trap 'exit 0' INT; $(CONTAINER_COMPOSETOOL) -f core-components-poc/stacks/observability-development/compose.yaml up || true;
 
 .PHONY: observability-dev-start
-observability-dev-start: ## Docker compose up for observability development stack (detached mode)
+observability-dev-start: # Docker compose up for observability development stack (detached mode)
 	@echo "🚀 Starting the Local Dev Default Docker Compose environment..."
 	@echo "Starting in detached mode..."
-	@$(CONTAINER_COMPOSETOOL) -f core-components-poc/solution-stacks/observability-development/compose.yaml up -d;
+	@$(CONTAINER_COMPOSETOOL) -f core-components-poc/stacks/observability-development/compose.yaml up -d;
 
 .PHONY: observability-app-up
-observability-app-up: ## Docker compose up for Observability App stack
+observability-app-up: # Docker compose up for Observability App stack
 	@echo "🚀 Starting the  Observability App Default Docker Compose environment..."
 	@echo "Starting in foreground mode..."
-	@trap 'exit 0' INT; $(CONTAINER_COMPOSETOOL) -f core-components-poc/solution-stacks/observability-app/compose.yaml up || true;
+	@trap 'exit 0' INT; $(CONTAINER_COMPOSETOOL) -f core-components-poc/stacks/observability-app/compose.yaml up || true;
 
 .PHONY: observability-app-start
-observability-app-start: ## Docker compose up for Observability App stack (detached mode)
+observability-app-start: # Docker compose up for Observability App stack (detached mode)
 	@echo "🚀 Starting the Observability App Default Docker Compose environment..."
 	@echo "Starting in detached mode..."
-	@$(CONTAINER_COMPOSETOOL) -f core-components-poc/solution-stacks/observability-app/compose.yaml up -d;
+	@$(CONTAINER_COMPOSETOOL) -f core-components-poc/stacks/observability-app/compose.yaml up -d;
 
 .PHONY: test-observability-dev
 test-observability-dev:
 	@echo "Running tests with observability-development solution stack..."
-	@./run_tests.sh ./solution-stacks/observability-development/compose.test.yaml
+	@./run_tests.sh ./stacks/observability-development/compose.test.yaml
 
 .PHONY: test-observability-app
 test-observability-app:
 	@echo "Running integration tests with observability-app solution stack..."
-	@./run_tests.sh ./solution-stacks/observability-app/compose.test.yaml
+	@./run_tests.sh ./stacks/observability-app/compose.test.yaml
 
 .PHONY: test-all
 test-all: test-observability-dev test-observability-app

@@ -103,7 +103,7 @@ compose.yaml:
 ```yaml
 include:
   - path : 
-      - ./AppFramework/solution-stacks/observability-app/compose.yaml
+      - ./AppFramework/stacks/observability-app/compose.yaml
       # - ./override.yaml # Add your application specific overrides here
 
 # Add your own container definitions here
