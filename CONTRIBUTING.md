@@ -1,6 +1,6 @@
 # Contributing Guide
 
-Thank you for your interest in contributing to the Application Study Tool!
+Thank you for your interest in contributing to the Observability Hub AppFramework!
 Please read this guide for general guidelines to follow, which borrows heavily
 from those used by the Opentelemetry Collector.
 
@@ -24,12 +24,12 @@ Follow the instructions below to create your PR.
 In the interest of keeping this repository clean and manageable, you should
 work from a fork. To create a fork, click the 'Fork' button at the top of the
 repository, then clone the fork locally using `git clone
-git@github.com:USERNAME/application-study-tool.git`.
+git@github.com:USERNAME/AppFramework-Docs.git`.
 
 You should also add this repository as an "upstream" repo to your local copy,
 in order to keep it up to date. You can add this as a remote like so:
 
-`git remote add upstream https://github.com/f5devcentral/application-study-tool.git`
+`git remote add upstream https://github.com/f5observabilityhub/AppFramework.git`
 
 Verify that the upstream exists:
 
@@ -60,14 +60,14 @@ Working with the project sources requires the following tools:
 Fork the repo and checkout  by:
 
 ```
-$ git clone git@github.com:f5devcentral/application-study-tool.git
+$ git clone git@github.com:f5observabilityhub/AppFramework.git
 ```
 
 Add your fork as an origin:
 
 ```shell
-$ cd application-study-tool
-$ git remote add fork git@github.com:YOUR_GITHUB_USERNAME/application-study-tool.git
+$ cd AppFramework
+$ git remote add fork git@github.com:YOUR_GITHUB_USERNAME/AppFramework.git
 ```
 
 ## Creating a PR

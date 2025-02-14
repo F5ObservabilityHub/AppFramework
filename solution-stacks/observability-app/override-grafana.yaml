@@ -1,16 +1,9 @@
-x-default-logging: &logging
-  driver: "syslog"
-  options:
-    syslog-address: "udp://host.docker.internal:5514"
-    syslog-format: rfc5424
-    tag: "{{.Name}}"
-
 services:
   grafana:
-    logging: *logging
     volumes:
-      # Add in the prometheus infrastructure dashboards
-      - ../../components/grafana/config/dashboards/prometheus/infrastructure:/etc/dashboards/infrastructure
+      # Add in the infrastructure dashboards
+      - ../../components/grafana/config/dashboards/infrastructure:/etc/dashboards/infrastructure
+      # Add in the config that tells grafana where to find the infrastructure dashboards
       - ../../components/grafana/config/provisioning/dashboards/dashboards-infrastructure.yaml:/etc/grafana/provisioning/dashboards/dashboards-infrastructure.yaml
       # Add in the clickhouse datasource
       - ../../components/grafana/config/provisioning/datasources/datasource-clickhouse.yaml:/etc/grafana/provisioning/datasources/datasource-clickhouse.yaml

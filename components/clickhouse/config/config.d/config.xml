@@ -1,10 +1,10 @@
 <clickhouse replace="true">
     <logger>
-        <level>information</level>
+        <level>notice</level>
         <console>true</console>
     </logger>
     <display_name>clickhouse</display_name>
-    <listen_host>0.0.0.0</listen_host>
+    <listen_host from_env="HOSTNAME" />
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
     <user_directories>

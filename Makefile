@@ -16,8 +16,8 @@
 
 .DEFAULT_GOAL := help
 
-PACKAGE_ROOT  := github.com/f5-observability-hub
-PACKAGE       := $(PACKAGE_ROOT)/core-components
+PACKAGE_ROOT  := github.com/F5ObservabilityHub
+PACKAGE       := $(PACKAGE_ROOT)/AppFramework
 DATE          ?= $(shell date -u +%FT%T%z)
 VERSION       ?= $(shell cat $(CURDIR)/.version 2> /dev/null || echo 0.0.0)
 GITHASH       ?= $(shell git rev-parse HEAD)

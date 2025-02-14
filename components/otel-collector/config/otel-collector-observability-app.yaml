@@ -27,9 +27,7 @@ exporters:
   clickhouse:
     endpoint: tcp://clickhouse:9000?dial_timeout=10s
     database: otel
-    async_insert: true
     ttl: 72h
-    compress: lz4
     create_schema: true
     timeout: 5s
     retry_on_failure:
@@ -41,6 +39,14 @@ exporters:
     password: ${env:OTEL_COLLECTOR_CLICKHOUSE_PASSWORD}
 
 service:
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: "${env:HOSTNAME}"
+                port: 8888
   pipelines:
     metrics:
       receivers: [otlp]

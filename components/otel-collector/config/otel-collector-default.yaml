@@ -24,6 +24,14 @@ exporters:
     sampling_thereafter: 200
 
 service:
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: "${env:HOSTNAME}"
+                port: 8888
   pipelines:
     metrics:
       receivers: [otlp]

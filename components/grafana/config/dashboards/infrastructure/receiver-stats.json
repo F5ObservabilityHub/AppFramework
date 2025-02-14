@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.2.0"
+      "version": "11.3.1"
     },
     {
       "type": "panel",
@@ -146,6 +146,7 @@
           "sort": "desc"
         }
       },
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -247,6 +248,7 @@
           "sort": "desc"
         }
       },
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -322,7 +324,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.2.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -448,6 +450,7 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -518,6 +521,7 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -620,7 +624,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.0.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -645,22 +649,20 @@
       "type": "timeseries"
     }
   ],
-  "schemaVersion": 39,
+  "refresh": "",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {},
-        "hide": 0,
         "includeAll": false,
         "label": "Prometheus",
-        "multi": false,
         "name": "datasource",
         "options": [],
         "query": "prometheus",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
@@ -671,7 +673,6 @@
           "uid": "${datasource}"
         },
         "definition": "label_values(endpoint_scrape_requests_total,endpoint)",
-        "hide": 0,
         "includeAll": true,
         "label": "API Endpoint",
         "multi": true,
@@ -684,8 +685,6 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
@@ -696,7 +695,6 @@
           "uid": "${datasource}"
         },
         "definition": "label_values(scrape_duration_seconds{job=~\"bigip.*\"},job)",
-        "hide": 0,
         "includeAll": true,
         "label": "Device",
         "multi": true,
@@ -709,8 +707,6 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       }
     ]
@@ -723,6 +719,6 @@
   "timezone": "browser",
   "title": "BigIP Collector Stats",
   "uid": "fdvbp5jh3qarke",
-  "version": 7,
+  "version": 1,
   "weekStart": ""
 }

@@ -21,6 +21,9 @@ processors:
     send_batch_size: 5000
 
 exporters:
+  otlphttp/prometheus:
+    endpoint: http://prometheus:9090/api/v1/otlp
+
   clickhouse:
     endpoint: tcp://clickhouse:9000?dial_timeout=10s
     database: otel
@@ -42,7 +45,7 @@ service:
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [debug, clickhouse]
+      exporters: [debug, otlphttp/prometheus]
     traces:
       receivers: [otlp]
       processors: [batch]
