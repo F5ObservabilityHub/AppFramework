@@ -39,14 +39,6 @@ exporters:
     password: ${env:OTEL_COLLECTOR_CLICKHOUSE_PASSWORD}
 
 service:
-  telemetry:
-    metrics:
-      readers:
-        - pull:
-            exporter:
-              prometheus:
-                host: "${env:HOSTNAME}"
-                port: 8888
   pipelines:
     metrics:
       receivers: [otlp]
@@ -60,3 +52,7 @@ service:
       receivers: [otlp, syslog/container-logs]
       processors: [batch]
       exporters: [debug, clickhouse]
+    logs/self:
+      receivers: [otlp/self]
+      processors: [batch]
+      exporters: [debug/noop, clickhouse]

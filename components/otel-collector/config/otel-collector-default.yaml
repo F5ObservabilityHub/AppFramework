@@ -9,6 +9,11 @@ receivers:
           allowed_origins:
             - "http://*"
             - "https://*"
+  # Seperate receiver for self-telemetry (avoid infinite logging cycle)
+  otlp/self:
+    protocols:
+      grpc:
+        endpoint: "${env:HOSTNAME}:4316"
 
 processors:
   batch:
@@ -22,9 +27,20 @@ exporters:
     verbosity: detailed
     sampling_initial: 5
     sampling_thereafter: 200
+  debug/noop:
+    verbosity: normal
+    sampling_initial: 0
+    sampling_thereafter: 0
 
 service:
   telemetry:
+    logs:
+      processors:
+        - batch:
+            exporter:
+              otlp:
+                protocol: grpc
+                endpoint: http://${env:HOSTNAME}:4316
     metrics:
       readers:
         - pull:
@@ -45,3 +61,7 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [debug]
+    logs/self:
+      receivers: [otlp/self]
+      processors: [batch]
+      exporters: [debug/noop]

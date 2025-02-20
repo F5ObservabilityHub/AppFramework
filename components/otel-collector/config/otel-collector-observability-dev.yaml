@@ -54,6 +54,10 @@ service:
       receivers: [otlp, syslog/container-logs]
       processors: [batch]
       exporters: [debug, clickhouse]
+    logs/self:
+      receivers: [otlp/self]
+      processors: [batch]
+      exporters: [debug/noop, clickhouse]
     profiles:
       receivers: [otlp]
       exporters: [debug]
