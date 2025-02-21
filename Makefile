@@ -55,6 +55,7 @@ up: ## Docker compose up
 .PHONY: start
 start: ## Runs docker compose up -d
 	@echo "🚀 Starting the Docker Compose environment..."
+	@echo "🚀 Health checks have to pass before this command completes (be patient)..."
 	@echo "Starting in daemon mode..."
 	@$(CONTAINER_COMPOSETOOL) -f $(DOCKER_COMPOSE_FILE) up -d;
 
@@ -70,7 +71,7 @@ down: ## Runs docker compose down
 
 .PHONY: stop
 stop: down ## Alias for down
-	@echo "💥 Docker Compose environment stopped."
+	@echo "🛑 Docker Compose environment stopped."
 
 .PHONY: logs
 logs: ## Runs docker compose logs --tail 100 -f

@@ -1,20 +1,3 @@
-receivers:
-  syslog/container-logs:
-    udp:
-      listen_address: "${env:HOSTNAME}:5514"
-    protocol: rfc5424
-    location: UTC
-
-  syslog/tcp:
-    tcp:
-      listen_address: "${env:HOSTNAME}:54526"
-      tls:
-        ca_file: /etc/otel-collector-config/ssl/ca.pem
-        cert_file: /etc/otel-collector-config/ssl/cert.pem
-        key_file: /etc/otel-collector-config/ssl/key.pem
-    protocol: rfc5424
-    location: UTC
-
 processors:
   batch/clickhouse:
     timeout: 5s
@@ -49,7 +32,7 @@ service:
       processors: [batch]
       exporters: [debug, clickhouse]
     logs:
-      receivers: [otlp, syslog/container-logs]
+      receivers: [otlp]
       processors: [batch]
       exporters: [debug, clickhouse]
     logs/self:

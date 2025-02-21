@@ -1268,6 +1268,7 @@
     "list": [
       {
         "current": {},
+        "label": "Metric Datasource",
         "name": "datasource",
         "options": [],
         "query": "prometheus",

@@ -2,7 +2,7 @@
 services:
   otel-collector:
     command:
-      # These don't merge with the base file correctly, re-define here
+      # These don't merge with the base file, re-define here
       - "--config=/etc/otel-collector.yaml"
       - "--config=/etc/otel-collector-config-extras.yaml"
       # Add the observability app receivers / exporters / processors / pipelines
