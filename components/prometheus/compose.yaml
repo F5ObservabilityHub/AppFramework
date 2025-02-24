@@ -2,7 +2,7 @@
 version: "3.7"
 
 volumes:
-  prometheus_data: {}
+  prometheus: {}
 
 services:
   prometheus:
@@ -13,7 +13,7 @@ services:
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - ./config/scrape_configs/scrape_prometheus.yaml:/etc/prometheus/scrape_configs/scrape_prometheus.yaml
-      - prometheus_data:/prometheus
+      - prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
       - '--storage.tsdb.path=/prometheus'

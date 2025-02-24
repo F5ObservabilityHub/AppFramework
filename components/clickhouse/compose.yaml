@@ -1,7 +1,7 @@
 version: '3'
 
 volumes:
-  clickhouse_data:
+  clickhouse:
 
 services:
   clickhouse:
@@ -16,6 +16,6 @@ services:
       - ./config/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
       - ./config/users.d/user-default.xml:/etc/clickhouse-server/users.d/user-default.xml
       - ./config/docker-entrypoint-initdb.d/init-otel-db.sh:/docker-entrypoint-initdb.d/init-otel-db.sh
-      - clickhouse_data:/var/lib/clickhouse
+      - clickhouse:/var/lib/clickhouse
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1

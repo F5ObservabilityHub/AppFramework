@@ -2,7 +2,7 @@
 version: "3.7"
 
 volumes:
-  grafana_data: {}
+  grafana: {}
 
 services:
   grafana:
@@ -22,4 +22,4 @@ services:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
       - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor traceQLStreaming metricsSummary
     volumes:
-      - grafana_data:/var/lib/grafana
+      - grafana:/var/lib/grafana
