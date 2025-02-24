@@ -1,6 +1,14 @@
 {
   "__inputs": [
     {
+      "name": "DS_CLICKHOUSE",
+      "label": "ClickHouse",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-clickhouse-datasource",
+      "pluginName": "ClickHouse"
+    },
+    {
       "name": "DS_PROMETHEUS",
       "label": "Prometheus",
       "description": "",
@@ -15,7 +23,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.3.1"
+      "version": "11.5.1"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-clickhouse-datasource",
+      "name": "ClickHouse",
+      "version": "4.8.1"
+    },
+    {
+      "type": "panel",
+      "id": "logs",
+      "name": "Logs",
+      "version": ""
     },
     {
       "type": "panel",
@@ -64,6 +84,57 @@
   "id": null,
   "links": [],
   "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "${log_datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showCommonLabels": true,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "${log_datasource}"
+          },
+          "editorType": "sql",
+          "format": 2,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.8.1",
+          "queryType": "logs",
+          "rawSql": "SELECT Timestamp as \"timestamp\", Body as \"body\", SeverityText as \"level\", TraceId as \"traceID\", mapConcat(LogAttributes, ResourceAttributes) AS labels FROM \"otel\".\"otel_logs\" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000",
+          "refId": "A"
+        }
+      ],
+      "title": "Collector Container Logs",
+      "type": "logs"
+    },
     {
       "datasource": {
         "type": "prometheus",
@@ -130,7 +201,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 9
       },
       "id": 5,
       "options": {
@@ -141,12 +212,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -232,7 +304,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 9
       },
       "id": 4,
       "options": {
@@ -243,12 +315,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -303,13 +376,26 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status Ratio [1H]"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 18
       },
       "id": 6,
       "options": {
@@ -324,7 +410,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -332,9 +418,9 @@
             "uid": "${datasource}"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "endpoint_scrape_responses_total{path=~\"$endpoint\", job=~\"$device_name\"}",
+          "expr": "sum(sum_over_time(endpoint_scrape_responses_total{path=~\"$endpoint\", job=~\"$device_name\"}[1h])) by (status_code, job, path) / on(job, path) group_left() sum(sum_over_time(endpoint_scrape_responses_total{path=~\"$endpoint\", job=~\"$device_name\"}[1h])) by (job, path)",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -352,7 +438,7 @@
           "options": {
             "excludeByName": {
               "Time": true,
-              "Value": true,
+              "Value": false,
               "__name__": true,
               "dataType": true,
               "instance": true,
@@ -361,6 +447,7 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
+              "Value": "Status Ratio [1H]",
               "job": "Device",
               "path": "Endpoint",
               "status_code": "Status"
@@ -434,7 +521,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 18
       },
       "id": 1,
       "options": {
@@ -445,12 +532,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -498,7 +586,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 27
       },
       "id": 2,
       "options": {
@@ -516,12 +604,13 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -608,7 +697,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 27
       },
       "id": 3,
       "options": {
@@ -619,12 +708,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -654,6 +744,16 @@
   "tags": [],
   "templating": {
     "list": [
+      {
+        "current": {},
+        "label": "Clickhouse",
+        "name": "log_datasource",
+        "options": [],
+        "query": "grafana-clickhouse-datasource",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
       {
         "current": {},
         "includeAll": false,
@@ -717,8 +817,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "BigIP Collector Stats",
+  "title": "BigIP Receiver Stats",
   "uid": "fdvbp5jh3qarke",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
