@@ -1,6 +1,3 @@
----
-version: "3.7"
-
 services:
   otel-collector:
     image: ghcr.io/f5devcentral/application-study-tool/otel_custom_collector:v0.8.1
